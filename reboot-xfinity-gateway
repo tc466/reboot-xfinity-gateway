@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Example usage:
-# GATEWAY=10.0.0.1 ./reboot-xfinity-router
+# GATEWAY=10.0.0.1 ./reboot-xfinity-gateway
 
 # Default if not passed through environment variables
 GATEWAY="${GATEWAY:-10.0.0.1}"
 
-LOG_FILE='/tmp/reboot-xfinity-router.log'
+LOG_FILE='/tmp/reboot-xfinity-gateway.log'
 
 REBOOT_API="http://${GATEWAY}/actionHandler/ajaxSet_Reset_Restore.jst"
 
 echo "$(date) - Rebooting gateway ${GATEWAY}" | tee -a "${LOG_FILE}"
 
-# Reboot the router
+# Reboot the gateway
 curl -d "resetInfo=%5B%22btn1%22%2C%22Device%22%2C%22admin%22%5D" -X POST "${GATEWAY}/actionHandler/ajaxSet_Reset_Restore.jst" | tee -a "${LOG_FILE}"
