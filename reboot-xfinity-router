@@ -1,27 +1,16 @@
 #!/bin/bash
 
 # Example usage:
-# GATEWAY=10.0.0.1 PASSWORD=password ./reboot-xfinity-router
+# GATEWAY=10.0.0.1 ./reboot-xfinity-router
 
 # Default if not passed through environment variables
 GATEWAY="${GATEWAY:-10.0.0.1}"
-PASSWORD="${PASSWORD:-password}"
 
 LOG_FILE='/tmp/reboot-xfinity-router.log'
 
-LOGIN_API="http://${GATEWAY}/check.jst"
 REBOOT_API="http://${GATEWAY}/actionHandler/ajaxSet_Reset_Restore.jst"
 
 echo "$(date) - Rebooting gateway ${GATEWAY}" | tee -a "${LOG_FILE}"
 
-# Make a temporary file to store cookies
-cookies_file=$(mktemp /tmp/reboot-xfinity-router.XXXXXX)
-
-# Log into the gateway
-curl -c ${cookies_file} -d "username=admin&password=${PASSWORD}&locale=false" -X POST "${GATEWAY}/check.jst" | tee -a "${LOG_FILE}"
-
 # Reboot the router
-curl -b ${cookies_file} -d "resetInfo=%5B%22btn1%22%2C%22Device%22%2C%22admin%22%5D" -X POST "${GATEWAY}/actionHandler/ajaxSet_Reset_Restore.jst" | tee -a "${LOG_FILE}"
-
-# Delete the cookies file
-rm "$cookies_file"
+curl -d "resetInfo=%5B%22btn1%22%2C%22Device%22%2C%22admin%22%5D" -X POST "${GATEWAY}/actionHandler/ajaxSet_Reset_Restore.jst" | tee -a "${LOG_FILE}"
