@@ -13,4 +13,4 @@ REBOOT_API="http://${GATEWAY}/actionHandler/ajaxSet_Reset_Restore.jst"
 echo "$(date) - Rebooting gateway ${GATEWAY}" | tee -a "${LOG_FILE}"
 
 # Reboot the gateway
-curl -d "resetInfo=%5B%22btn1%22%2C%22Device%22%2C%22admin%22%5D" -X POST "${GATEWAY}/actionHandler/ajaxSet_Reset_Restore.jst" | tee -a "${LOG_FILE}"
+curl -d "resetInfo=%5B%22btn1%22%2C%22Device%22%2C%22admin%22%5D" -X POST "${REBOOT_API}" | tee -a "${LOG_FILE}"
